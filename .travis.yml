@@ -1,0 +1,25 @@
+language: php
+
+php:
+  - 7.1
+  - 7.2
+  - nightly
+
+matrix:
+  fast_finish: true
+  allow_failures:
+  - php: nightly
+
+install:
+  - composer self-update
+  - composer --version
+  - php -v
+  - composer install --prefer-dist
+
+script:
+  - composer run analyze
+  - composer run test
+
+after_script:
+  - wget https://scrutinizer-ci.com/ocular.phar
+  - php ocular.phar code-coverage:upload --format=php-clover coverage.clover

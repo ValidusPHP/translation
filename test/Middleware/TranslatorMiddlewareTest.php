@@ -1,0 +1,187 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Polar\Test\Translation\Middleware;
+
+use PHPUnit\Framework\TestCase;
+use Polar\Translation\Middleware\TranslatorMiddleware;
+use Prophecy\Prophecy\ObjectProphecy;
+use Psr\Container\ContainerInterface;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\MiddlewareInterface;
+use Psr\Http\Server\RequestHandlerInterface;
+use Symfony\Component\Translation\TranslatorInterface;
+
+class TranslatorMiddlewareTest extends TestCase
+{
+    /** @var ServerRequestInterface|ObjectProphecy $request */
+    private $request;
+
+    /** @var RequestHandlerInterface|ObjectProphecy $handler */
+    private $handler;
+
+    /** @var TranslatorInterface|ObjectProphecy $translator */
+    private $translator;
+
+    /** @var ContainerInterface|ObjectProphecy $container */
+    private $container;
+
+    public function setUp(): void
+    {
+        $this->request = $this->prophesize(ServerRequestInterface::class);
+        $this->handler = $this->prophesize(RequestHandlerInterface::class);
+        $this->translator = $this->prophesize(TranslatorInterface::class);
+        $this->container = $this->prophesize(ContainerInterface::class);
+    }
+
+    public function testConstructor(): void
+    {
+        $middleware = new TranslatorMiddleware(
+            $this->translator->reveal(),
+            []
+        );
+        static::assertInstanceOf(MiddlewareInterface::class, $middleware);
+    }
+
+    public function testGetsLocaleFromRequest(): void
+    {
+        $this->request->getHeaderLine('Accept-Language')
+            ->shouldBeCalledOnce()
+            ->willReturn(
+                'en; q=0.1, fr; q=0.4, fu; q=0.9, de; q=0.2'
+            );
+
+        $this->translator->setLocale('fu')
+            ->shouldBeCalledOnce()
+            ->willReturn(null);
+        $translator = $this->translator->reveal();
+
+        $request = $this->request->reveal();
+
+        $this->request->withAttribute(TranslatorMiddleware::TRANSLATOR_ATTRIBUTE, $translator)
+            ->shouldBeCalledOnce()
+            ->willReturn(
+                $request
+            );
+
+        $this->handler->handle($request)
+            ->shouldBeCalledOnce()
+            ->willReturn(
+                $this->prophesize(ResponseInterface::class)->reveal()
+            );
+
+        $handler = $this->handler->reveal();
+
+        $middleware = new TranslatorMiddleware($translator, ['en', 'fu']);
+        $response = $middleware->process($request, $handler);
+
+        static::assertInstanceOf(ResponseInterface::class, $response);
+    }
+
+    public function testDefaultPrioritiesBasedOnTheTranslatorLocale(): void
+    {
+        $this->request->getHeaderLine('Accept-Language')
+            ->shouldBeCalledOnce()
+            ->willReturn(
+                'en; q=0.1, fr; q=0.4, fu; q=0.9, de; q=0.2'
+            );
+
+        $this->translator->setLocale('fu')
+            ->shouldBeCalledOnce()
+            ->willReturn(null);
+        $this->translator->getLocale()
+            ->shouldBeCalledOnce()
+            ->willReturn('fu');
+        $translator = $this->translator->reveal();
+
+        $request = $this->request->reveal();
+
+        $this->request->withAttribute(TranslatorMiddleware::TRANSLATOR_ATTRIBUTE, $translator)
+            ->shouldBeCalledOnce()
+            ->willReturn(
+                $request
+            );
+
+        $this->handler->handle($request)
+            ->shouldBeCalledOnce()
+            ->willReturn(
+                $this->prophesize(ResponseInterface::class)->reveal()
+            );
+
+        $handler = $this->handler->reveal();
+
+        $middleware = new TranslatorMiddleware($translator);
+        $response = $middleware->process($request, $handler);
+
+        static::assertInstanceOf(ResponseInterface::class, $response);
+    }
+
+    public function testNoAcceptLanguageHeaderLine(): void
+    {
+        $this->request->getHeaderLine('Accept-Language')
+            ->shouldBeCalledOnce()
+            ->willReturn(
+                ''
+            );
+
+        $this->translator->getLocale()
+            ->shouldBeCalledOnce()
+            ->willReturn('fu');
+        $translator = $this->translator->reveal();
+
+        $request = $this->request->reveal();
+
+        $this->request->withAttribute(TranslatorMiddleware::TRANSLATOR_ATTRIBUTE, $translator)
+            ->shouldBeCalledOnce()
+            ->willReturn(
+                $request
+            );
+
+        $this->handler->handle($request)
+            ->shouldBeCalledOnce()
+            ->willReturn(
+                $this->prophesize(ResponseInterface::class)->reveal()
+            );
+
+        $handler = $this->handler->reveal();
+
+        $middleware = new TranslatorMiddleware($translator);
+        $response = $middleware->process($request, $handler);
+
+        static::assertInstanceOf(ResponseInterface::class, $response);
+    }
+
+    public function testCantGetBestLocaleFromRequest(): void
+    {
+        $this->request->getHeaderLine('Accept-Language')
+            ->shouldBeCalledOnce()
+            ->willReturn(
+                'en, de'
+            );
+
+        $translator = $this->translator->reveal();
+
+        $request = $this->request->reveal();
+
+        $this->request->withAttribute(TranslatorMiddleware::TRANSLATOR_ATTRIBUTE, $translator)
+            ->shouldBeCalledOnce()
+            ->willReturn(
+                $request
+            );
+
+        $this->handler->handle($request)
+            ->shouldBeCalledOnce()
+            ->willReturn(
+                $this->prophesize(ResponseInterface::class)->reveal()
+            );
+
+        $handler = $this->handler->reveal();
+
+        $middleware = new TranslatorMiddleware($translator, ['fr']);
+        $response = $middleware->process($request, $handler);
+
+        static::assertInstanceOf(ResponseInterface::class, $response);
+    }
+}

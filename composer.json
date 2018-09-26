@@ -1,0 +1,58 @@
+{
+    "name": "polar/translation",
+    "description": "Provides translation for your Expressive project.",
+    "type": "library",
+    "homepage": "https://github.com/PolarPHP/translation",
+    "license": "MIT",
+    "keywords": [
+        "zend-expressive",
+        "symfony-translation",
+        "container-interop-translation",
+        "psr-11"
+    ],
+    "require": {
+        "php": "^7.1",
+        "psr/container": "^1.0",
+        "psr/http-message": "^1.0",
+        "psr/http-server-handler": "^1.0",
+        "psr/http-server-middleware": "^1.0",
+        "symfony/config": "^4.0",
+        "symfony/translation": "^4.0",
+        "symfony/yaml": "^4.0",
+        "willdurand/negotiation": "^2.3"
+    },
+    "require-dev": {
+        "friendsofphp/php-cs-fixer": "^2.13",
+        "phpstan/phpstan": "^0.10.3",
+        "phpstan/phpstan-strict-rules": "^0.10.1",
+        "phpunit/phpunit": "^7.0.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "Polar\\Translation\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Polar\\Test\\Translation\\": "test/"
+        }
+    },
+    "scripts": {
+        "analyze": "phpstan analyze -c ./phpstan.neon",
+        "fix": "php-cs-fixer fix",
+        "test": "phpunit --colors=always --coverage-clover clover.xml",
+        "check": [
+            "@fix",
+            "@analyze",
+            "@test"
+        ]
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "extra": {
+        "zf": {
+            "config-provider": "Polar\\Translation\\ConfigProvider"
+        }
+    }
+}
