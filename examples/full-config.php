@@ -27,7 +27,8 @@ return  [
             [
                 'format' => 'array',
                 'resource' => ['Hello %name%' => 'Hello %name%'],
-                'locale' => 'en',
+                // in case the 'locale' is not provided, the default locale will be used
+                // which in this case is 'en'
             ], [
                 'format' => 'php',
                 'resource' => __DIR__ . '/resources/resource.php',
