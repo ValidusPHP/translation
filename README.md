@@ -1,4 +1,4 @@
-### Validus Translation
+# Validus Translation
 
 Provides translations for zend expressive projects.
 
@@ -9,14 +9,14 @@ Provides translations for zend expressive projects.
 
 Symfony Translation factories for PSR-11 with Zend configuration provider.
 
-##Installation
+## Installation
 
 The easiest way to install this package is through composer:
 ```bash
 $ composer require validus/translation
 ```
 
-##Configuration
+## Configuration
   
 A complete example configuration can be found in example/full-config.php. 
 Please note that the values in there are the defaults, and don't have to be supplied when you are not changing them. Keep your own configuration as minimal as possible. A minimal configuration can be found in example/simple-config.php
