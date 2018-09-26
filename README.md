@@ -20,3 +20,23 @@ $ composer require validus/translation
   
 A complete example configuration can be found in example/full-config.php. 
 Please note that the values in there are the defaults, and don't have to be supplied when you are not changing them. Keep your own configuration as minimal as possible. A minimal configuration can be found in example/simple-config.php
+
+If your application uses the zend-component-installer Composer plugin, your configuration is complete; the shipped Validus\Translation\ConfigProvider registers the translation service.
+
+## Usage
+
+Validus Translation provides middleware consuming PSR-7 HTTP message instances, via implementation of PSR-15 interfaces.
+
+#### Adding the middleware to your application
+you may pipe this middleware anywhere in your application. If you want to have it available anywhere, pipe it early in your application, prior to any routing. As an example, within Expressive, you could pipe it in the config/pipeline.php file:
+```php
+$app->pipe(\Validus\Translation\Middleware\TranslatorMiddleware::class);
+```
+Within Expressive, you can do this when routing, in your config/routes.php file, or within a delegator factory:
+```php
+$app->post('/login', [
+    \Validus\Translation\Middleware\TranslatorMiddleware::class,
+    \User\Middleware\LoginHandler::class
+]);
+```
+
