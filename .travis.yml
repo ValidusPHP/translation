@@ -5,11 +5,21 @@ php:
   - 7.2
   - nightly
 
+branches:
+  only:
+  - master
+  - dev
+
+cache:
+  directories:
+  - $HOME/.composer/cache
+
 matrix:
   fast_finish: true
   allow_failures:
   - php: nightly
 
+before_install:
 install:
   - composer self-update
   - composer --version
@@ -21,6 +31,4 @@ script:
   - composer run test
 
 after_success:
-  - |
-    wget https://github.com/php-coveralls/php-coveralls/releases/download/v2.0.0/php-coveralls.phar
-    php php-coveralls.phar --verbose;
+  - composer coveralls
