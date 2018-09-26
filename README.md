@@ -3,7 +3,7 @@
 Provides translations for zend expressive projects.
 
 ---
-![Packagist](https://img.shields.io/packagist/dm/validus/translation.svg) [![GitHub license](https://img.shields.io/github/license/ValidusPHP/translation.svg)](https://github.com/ValidusPHP/translation/blob/master/LICENSE) [![Build Status](https://travis-ci.org/ValidusPHP/translation.svg?branch=master)](https://travis-ci.org/ValidusPHP/translation) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/ValidusPHP/translation/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/ValidusPHP/translation/?branch=master) [![Coverage Status](https://coveralls.io/repos/github/ValidusPHP/translation/badge.svg?branch=master)](https://coveralls.io/github/ValidusPHP/translation?branch=master)
+[![Packagist](https://img.shields.io/packagist/dm/validus/translation.svg)](https://packagist.com/packages/validus/translation) [![GitHub license](https://img.shields.io/github/license/ValidusPHP/translation.svg)](https://github.com/ValidusPHP/translation/blob/master/LICENSE) [![Build Status](https://travis-ci.org/ValidusPHP/translation.svg?branch=master)](https://travis-ci.org/ValidusPHP/translation) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/ValidusPHP/translation/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/ValidusPHP/translation/?branch=master) [![Coverage Status](https://coveralls.io/repos/github/ValidusPHP/translation/badge.svg?branch=master)](https://coveralls.io/github/ValidusPHP/translation?branch=master)
 
 ---
 
