@@ -18,6 +18,7 @@ use Symfony\Component\Translation\Formatter\MessageFormatter;
 use Symfony\Component\Translation\Translator;
 use Symfony\Component\Translation\TranslatorInterface;
 use function array_merge;
+use function is_string;
 
 class TranslatorFactory
 {
@@ -31,26 +32,17 @@ class TranslatorFactory
         $config = $container->has('config') ? $container->get('config') : [];
         $debug = $config['debug'] ?? true;
 
-        $config = array_merge($this->getDefaultConfigurations(), $config['translation'] ?? []);
+        $config = $this->getTranslationConfig($config);
 
         $formatter = $container->has($config['formatter']) ? $container->get($config['formatter']) : new $config['formatter']();
 
         $cache = $debug ? null : $config['cache_dir'];
         $translator = new Translator($config['locale'], $formatter, $cache, $debug);
 
-        $loaders = $config['loaders'];
-
-        foreach ($loaders as $format => $loader) {
-            if (\is_string($loader)) {
-                $loader = $container->has($loader) ? $container->get($loader) : new $loader();
-            }
-            $translator->addLoader($format, $loader);
-        }
-
+        $this->addLoaders($container, $translator, $config['loaders']);
         $this->addResources($translator, $config['resources']);
 
         $translator->setFallbackLocales($config['fallback']);
-
         $translator->setLocale($config['locale']);
 
         return $translator;
@@ -81,19 +73,37 @@ class TranslatorFactory
     }
 
     /**
-     * get the default Translator configurations.
+     * Add loaders to the given translator instance.
+     *
+     * @param ContainerInterface $container
+     * @param Translator         $translator
+     * @param array              $loaders
+     */
+    protected function addLoaders(ContainerInterface $container, Translator $translator, array $loaders = []): void
+    {
+        foreach ($loaders as $format => $loader) {
+            if (is_string($loader)) {
+                $loader = $container->has($loader) ? $container->get($loader) : new $loader();
+            }
+
+            $translator->addLoader($format, $loader);
+        }
+    }
+
+    /**
+     * @param array $config
      *
      * @return array
      */
-    protected function getDefaultConfigurations(): array
+    protected function getTranslationConfig(array $config): array
     {
-        return [
+        return array_merge([
             'locale' => 'en',
             'cache_dir' => null,
             'fallback' => [],
             'formatter' => MessageFormatter::class,
             'loaders' => [],
             'resources' => [],
-        ];
+        ], $config['translation'] ?? []);
     }
 }
