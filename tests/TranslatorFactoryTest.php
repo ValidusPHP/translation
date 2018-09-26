@@ -13,10 +13,12 @@ declare(strict_types=1);
 
 namespace Validus\Tests\Translation;
 
+use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Prophecy\ObjectProphecy;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\Translation\Formatter\MessageFormatter;
+use Symfony\Component\Translation\Loader\YamlFileLoader;
 use Symfony\Component\Translation\Translator;
 use Validus\Translation\TranslatorFactory;
 
@@ -126,5 +128,78 @@ class TranslatorFactoryTest extends TestCase
 
         static::assertEquals('The email address is invalid.', $translator->trans('email', [], 'validations', 'en'));
         static::assertEquals('L\'adresse mail est invalide.', $translator->trans('email', [], 'validations', 'fr'));
+    }
+
+    public function testResourceFormatIsMissing(): void
+    {
+        $config = [
+            'translation' => [
+                'loaders' => [
+                    YamlFileLoader::class,
+                ],
+                'resources' => [
+                    [
+                        'resource' => 'path/to/messages.en.yaml',
+                        'domain' => 'messages',
+                        'locale' => 'en',
+                    ],
+                ],
+            ],
+        ];
+
+        $this->container->has('config')
+            ->shouldBeCalledOnce()
+            ->willReturn(true);
+        $this->container->get('config')
+            ->shouldBeCalledOnce()
+            ->willReturn($config);
+        $this->container->has(MessageFormatter::class)
+            ->shouldBeCalledOnce()
+            ->willReturn(false);
+        $this->container->has(YamlFileLoader::class)
+            ->shouldBeCalledOnce()
+            ->willReturn(false);
+        $factory = new TranslatorFactory();
+
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('resource format is missing from resources configuration#0.');
+
+        $factory($this->container->reveal());
+    }
+
+    public function testResourceIsMissing(): void
+    {
+        $config = [
+            'translation' => [
+                'loaders' => [
+                    YamlFileLoader::class,
+                ],
+                'resources' => [
+                    [
+                        'format' => 'yaml',
+                        'domain' => 'messages',
+                        'locale' => 'en',
+                    ],
+                ],
+            ],
+        ];
+        $this->container->has('config')
+            ->shouldBeCalledOnce()
+            ->willReturn(true);
+        $this->container->get('config')
+            ->shouldBeCalledOnce()
+            ->willReturn($config);
+        $this->container->has(MessageFormatter::class)
+            ->shouldBeCalledOnce()
+            ->willReturn(false);
+        $this->container->has(YamlFileLoader::class)
+            ->shouldBeCalledOnce()
+            ->willReturn(false);
+        $factory = new TranslatorFactory();
+
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('resource is missing from resources configuration#0.');
+
+        $factory($this->container->reveal());
     }
 }
