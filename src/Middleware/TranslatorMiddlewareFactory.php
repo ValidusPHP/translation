@@ -25,7 +25,7 @@ class TranslatorMiddlewareFactory
 
         $config = $config['translator'] ?? [];
 
-        $priorities = $config['priorities'] ?? $config['fallbacks'] ?? [$translator->getLocale()];
+        $priorities = $config['priorities'] ?? $config['fallback'] ?? [$translator->getLocale()];
 
         return new TranslatorMiddleware($translator, $priorities);
     }

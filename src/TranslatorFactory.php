@@ -17,6 +17,7 @@ use Psr\Container\ContainerInterface;
 use Symfony\Component\Translation\Formatter\MessageFormatter;
 use Symfony\Component\Translation\Translator;
 use Symfony\Component\Translation\TranslatorInterface;
+use function array_merge;
 
 class TranslatorFactory
 {
@@ -29,33 +30,40 @@ class TranslatorFactory
     {
         $config = $container->has('config') ? $container->get('config') : [];
         $debug = $config['debug'] ?? true;
-        $config = $config['translation'] ?? [];
 
-        if (isset($config['formatter']) && $container->has($config['formatter'])) {
-            $formatter = $container->get($config['formatter']);
-        } else {
-            $formatter = new MessageFormatter();
-        }
+        $config = array_merge($this->getDefaultConfigurations(), $config['translation'] ?? []);
 
-        $translator = new Translator(
-            $config['locale'] ?? 'en',
-            $formatter,
-            $debug ? null : ($config['cache_dir'] ?? null),
-            $debug
-        );
+        $formatter = $container->has($config['formatter']) ? $container->get($config['formatter']) : new $config['formatter']();
 
-        $loaders = $config['loaders'] ?? [];
+        $cache = $debug ? null : $config['cache_dir'];
+        $translator = new Translator($config['locale'], $formatter, $cache, $debug);
+
+        $loaders = $config['loaders'];
 
         foreach ($loaders as $format => $loader) {
             if (\is_string($loader)) {
                 $loader = $container->has($loader) ? $container->get($loader) : new $loader();
             }
-
             $translator->addLoader($format, $loader);
         }
 
-        $resources = $config['resources'] ?? [];
+        $this->addResources($translator, $config['resources']);
 
+        $translator->setFallbackLocales($config['fallback']);
+
+        $translator->setLocale($config['locale']);
+
+        return $translator;
+    }
+
+    /**
+     * Add resources to the given translator instance.
+     *
+     * @param Translator $translator
+     * @param array      $resources
+     */
+    protected function addResources(Translator $translator, array $resources = []): void
+    {
         foreach ($resources as $id => $resource) {
             if (!isset($resource['format'])) {
                 throw new InvalidArgumentException("resource format is missing from resources configuration#{$id}.");
@@ -68,18 +76,24 @@ class TranslatorFactory
             $resource['locale'] = $resource['locale'] ?? $config['locale'] ?? 'en';
             $resource['domain'] = $resource['domain'] ?? 'messages';
 
-            $translator->addResource(
-                $resource['format'],
-                $resource['resource'],
-                $resource['locale'],
-                $resource['domain']
-            );
+            $translator->addResource($resource['format'], $resource['resource'], $resource['locale'], $resource['domain']);
         }
+    }
 
-        $translator->setFallbackLocales($config['fallback'] ?? []);
-
-        $translator->setLocale($config['locale'] ?? 'en');
-
-        return $translator;
+    /**
+     * get the default Translator configurations.
+     *
+     * @return array
+     */
+    protected function getDefaultConfigurations(): array
+    {
+        return [
+            'locale' => 'en',
+            'cache_dir' => null,
+            'fallback' => [],
+            'formatter' => MessageFormatter::class,
+            'loaders' => [],
+            'resources' => [],
+        ];
     }
 }

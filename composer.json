@@ -39,7 +39,7 @@
     },
     "scripts": {
         "analyze": "phpstan analyze -c ./phpstan.neon",
-        "fix": "php-cs-fixer fix",
+        "fix": "php-cs-fixer fix -vvv",
         "test": "phpunit --colors=always --coverage-clover clover.xml",
         "check": [
             "@fix",

@@ -16,6 +16,7 @@ namespace Validus\Tests\Translation;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Prophecy\ObjectProphecy;
 use Psr\Container\ContainerInterface;
+use Symfony\Component\Translation\Formatter\MessageFormatter;
 use Symfony\Component\Translation\Translator;
 use Validus\Translation\TranslatorFactory;
 
@@ -32,6 +33,10 @@ class TranslatorFactoryTest extends TestCase
     public function testDefaultTranslator(): void
     {
         $this->container->has('config')
+            ->shouldBeCalledOnce()
+            ->willReturn(false);
+
+        $this->container->has(MessageFormatter::class)
             ->shouldBeCalledOnce()
             ->willReturn(false);
 
@@ -101,6 +106,10 @@ class TranslatorFactoryTest extends TestCase
                 ->shouldBeCalledOnce()
                 ->willReturn(false);
         }
+
+        $this->container->has(MessageFormatter::class)
+            ->shouldBeCalledOnce()
+            ->willReturn(false);
 
         $factory = new TranslatorFactory();
         /** @var Translator $translator */
