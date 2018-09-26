@@ -1,5 +1,5 @@
 {
-    "name": "polar/translation",
+    "name": "validus/translation",
     "description": "Provides translation for your Expressive project.",
     "type": "library",
     "homepage": "https://github.com/ValidusPHP/translation",
