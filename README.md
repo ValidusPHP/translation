@@ -39,4 +39,24 @@ $app->post('/login', [
     \User\Middleware\LoginHandler::class
 ]);
 ```
+#### Accessing the translator 
+if you have added the middleware to your application, you can access the translator from the request attrbiutes : 
+```php
+     public function handle(ServerRequestInterface $request): ResponseInterface
+     {
+        $translator = $request->getAttribute(TranslatorMiddleware::TRANSLATOR_ATTRIBUTE);
+        // or simply 
+        $translator = $request->getAttribute('translator');
+        
+        // do your thing 
+        
+        return $response;
+     }
+```
+or via the container :
+```php
+use Symfony\Components\Translation\TranslatorInterface;
+
+$translator = $container->get(TranslatorInterface::class);
+```
 
