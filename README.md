@@ -40,7 +40,7 @@ $app->post('/login', [
 ]);
 ```
 #### Accessing the translator 
-if you have added the middleware to your application, you can access the translator from the request attrbiutes : 
+if you have added the middleware to your application, you can access the translator from the request attributes : 
 ```php
      public function handle(ServerRequestInterface $request): ResponseInterface
      {
