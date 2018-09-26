@@ -1,13 +1,12 @@
 <?php
-/*──────────────────────────────────────────────────────────────────────────────
- ─ @author Saif Eddin Gmati <azjezz@azjezz.me>
- ─
- ─ Unauthorized copying of this file, via any medium is strictly prohibited
- ─ Proprietary and confidential
- ─ Written by Saif Eddin Gmati.
- ─
- ─ Validus Copyright (c) 2018.
- ─────────────────────────────────────────────────────────────────────────────*/
+/**
+ * This File is Part of the Validus Translation package.
+ *
+ * @copyright (c) 2018 Validus <https://github.com/ValidusPHP/>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 declare(strict_types=1);
 
