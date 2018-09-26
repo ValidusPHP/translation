@@ -20,6 +20,7 @@ script:
   - composer run analyze
   - composer run test
 
-after_script:
-  - wget https://scrutinizer-ci.com/ocular.phar
-  - php ocular.phar code-coverage:upload --format=php-clover coverage.clover
+after_success:
+  - |
+    wget https://github.com/php-coveralls/php-coveralls/releases/download/v2.0.0/php-coveralls.phar
+    php php-coveralls.phar --verbose;
