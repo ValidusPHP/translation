@@ -4,6 +4,6 @@ parameters:
         - php
     paths:
         - src
-        - test
+        - tests
 includes:
 	- vendor/phpstan/phpstan-strict-rules/rules.neon

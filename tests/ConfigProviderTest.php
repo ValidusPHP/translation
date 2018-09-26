@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Polar\Test\Translation;
+namespace Validus\Tests\Translation;
 
 use PHPStan\Testing\TestCase;
-use Polar\Translation\ConfigProvider;
+use Validus\Translation\ConfigProvider;
 
 class ConfigProviderTest extends TestCase
 {

@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Polar\Test\Translation\Middleware;
+namespace Validus\Tests\Translation\Middleware;
 
 use PHPUnit\Framework\TestCase;
-use Polar\Translation\Middleware\TranslatorMiddlewareFactory;
 use Prophecy\Prophecy\ObjectProphecy;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Symfony\Component\Translation\TranslatorInterface;
+use Validus\Translation\Middleware\TranslatorMiddlewareFactory;
 
 class TranslatorMiddlewareFactoryTest extends TestCase
 {

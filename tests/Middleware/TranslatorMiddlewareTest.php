@@ -2,10 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Polar\Test\Translation\Middleware;
+namespace Validus\Tests\Translation\Middleware;
 
 use PHPUnit\Framework\TestCase;
-use Polar\Translation\Middleware\TranslatorMiddleware;
 use Prophecy\Prophecy\ObjectProphecy;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -13,6 +12,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Symfony\Component\Translation\TranslatorInterface;
+use Validus\Translation\Middleware\TranslatorMiddleware;
 
 class TranslatorMiddlewareTest extends TestCase
 {

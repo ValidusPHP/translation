@@ -1,8 +1,8 @@
 <?php
 /**
- * This File is Part of the Polar Translation package.
+ * This File is Part of the Validus Translation package.
  *
- * @copyright (c) 2018 Polar <https://github.com/PolarOSS/>
+ * @copyright (c) 2018 Validus <https://github.com/ValidusPHP/>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -10,7 +10,7 @@
 
 declare(strict_types=1);
 
-namespace Polar\Translation;
+namespace Validus\Translation;
 
 use InvalidArgumentException;
 use Psr\Container\ContainerInterface;

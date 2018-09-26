@@ -2,7 +2,7 @@
     "name": "polar/translation",
     "description": "Provides translation for your Expressive project.",
     "type": "library",
-    "homepage": "https://github.com/PolarPHP/translation",
+    "homepage": "https://github.com/ValidusPHP/translation",
     "license": "MIT",
     "keywords": [
         "zend-expressive",
@@ -29,12 +29,12 @@
     },
     "autoload": {
         "psr-4": {
-            "Polar\\Translation\\": "src/"
+            "Validus\\Translation\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Polar\\Test\\Translation\\": "test/"
+            "Validus\\Tests\\Translation\\": "tests/"
         }
     },
     "scripts": {
@@ -52,7 +52,7 @@
     },
     "extra": {
         "zf": {
-            "config-provider": "Polar\\Translation\\ConfigProvider"
+            "config-provider": "Validus\\Translation\\ConfigProvider"
         }
     }
 }

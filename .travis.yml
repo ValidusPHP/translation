@@ -18,7 +18,7 @@ install:
 
 script:
   - composer run analyze
-  - composer run test
+  - composer run tests
 
 after_script:
   - wget https://scrutinizer-ci.com/ocular.phar

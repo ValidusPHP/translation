@@ -6,18 +6,18 @@
  ─ Proprietary and confidential
  ─ Written by Saif Eddin Gmati.
  ─
- ─ Polar Copyright (c) 2018.
+ ─ Validus Copyright (c) 2018.
  ─────────────────────────────────────────────────────────────────────────────*/
 
 declare(strict_types=1);
 
-namespace Polar\Test\Translation;
+namespace Validus\Tests\Translation;
 
 use PHPUnit\Framework\TestCase;
-use Polar\Translation\TranslatorFactory;
 use Prophecy\Prophecy\ObjectProphecy;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\Translation\Translator;
+use Validus\Translation\TranslatorFactory;
 
 class TranslatorFactoryTest extends TestCase
 {
