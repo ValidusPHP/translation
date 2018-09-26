@@ -2,6 +2,8 @@
 
 Provides translations for zend expressive projects.
 
+[![SensioLabsInsight](https://insight.sensiolabs.com/projects/96be235a-c73f-4de0-80bf-881d79f2f04b/big.png)](https://insight.sensiolabs.com/projects/96be235a-c73f-4de0-80bf-881d79f2f04b)
+
 ---
 [![Packagist](https://img.shields.io/packagist/dm/validus/translation.svg)](https://packagist.org/packages/validus/translation) [![GitHub license](https://img.shields.io/github/license/ValidusPHP/translation.svg)](https://github.com/ValidusPHP/translation/blob/master/LICENSE) [![Build Status](https://travis-ci.org/ValidusPHP/translation.svg?branch=master)](https://travis-ci.org/ValidusPHP/translation) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/ValidusPHP/translation/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/ValidusPHP/translation/?branch=master) [![Coverage Status](https://coveralls.io/repos/github/ValidusPHP/translation/badge.svg?branch=master)](https://coveralls.io/github/ValidusPHP/translation?branch=master)
 
