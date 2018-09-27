@@ -57,7 +57,7 @@ if you have added the middleware to your application, you can access the transla
 ```
 or via the container :
 ```php
-use Symfony\Components\Translation\TranslatorInterface;
+use Symfony\Component\Translation\TranslatorInterface;
 
 $translator = $container->get(TranslatorInterface::class);
 ```
