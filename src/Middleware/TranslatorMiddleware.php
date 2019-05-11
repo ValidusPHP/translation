@@ -18,13 +18,11 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Component\Translation\Translator;
 
 class TranslatorMiddleware implements MiddlewareInterface
 {
-    public const TRANSLATOR_ATTRIBUTE = 'translator';
-
-    /** @var TranslatorInterface $translator */
+    /** @var Translator $translator */
     protected $translator;
 
     /** @var LanguageNegotiator $negotiator */
@@ -36,10 +34,10 @@ class TranslatorMiddleware implements MiddlewareInterface
     /**
      * LocalizationMiddleware constructor.
      *
-     * @param TranslatorInterface $translator
-     * @param array|null          $priorities
+     * @param Translator $translator
+     * @param array|null $priorities
      */
-    public function __construct(TranslatorInterface $translator, array $priorities = null)
+    public function __construct(Translator $translator, ?array $priorities = null)
     {
         $this->translator = $translator;
         $this->priorities = $priorities ?? [$translator->getLocale()];
@@ -63,15 +61,13 @@ class TranslatorMiddleware implements MiddlewareInterface
             $this->translator->setLocale($local);
         }
 
-        return $handler->handle(
-            $request->withAttribute(static::TRANSLATOR_ATTRIBUTE, $this->translator)
-        );
+        return $handler->handle($request);
     }
 
     /**
      * @param ServerRequestInterface $request
      *
-     * @return null|string
+     * @return string|null
      */
     protected function getLocaleFromRequest(ServerRequestInterface $request): ?string
     {
