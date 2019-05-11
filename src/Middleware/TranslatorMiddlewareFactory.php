@@ -13,14 +13,14 @@ declare(strict_types=1);
 namespace Validus\Translation\Middleware;
 
 use Psr\Container\ContainerInterface;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Component\Translation\Translator;
 
 class TranslatorMiddlewareFactory
 {
     public function __invoke(ContainerInterface $container): TranslatorMiddleware
     {
-        /** @var TranslatorInterface $translator */
-        $translator = $container->get(TranslatorInterface::class);
+        /** @var Translator $translator */
+        $translator = $container->get(Translator::class);
         $config = $container->has('config') ? $container->get('config') : [];
 
         $config = $config['translator'] ?? [];
