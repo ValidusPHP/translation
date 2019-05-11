@@ -12,29 +12,31 @@ declare(strict_types=1);
 
 namespace Validus\Translation;
 
+use function array_merge;
 use InvalidArgumentException;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\Translation\Formatter\MessageFormatter;
+use Symfony\Component\Translation\Formatter\MessageFormatterInterface;
 use Symfony\Component\Translation\Translator;
-use Symfony\Component\Translation\TranslatorInterface;
-use function array_merge;
-use function is_string;
 
 class TranslatorFactory
 {
     /**
      * @param ContainerInterface $container
      *
-     * @return TranslatorInterface
+     * @return Translator
      */
-    public function __invoke(ContainerInterface $container): TranslatorInterface
+    public function __invoke(ContainerInterface $container): Translator
     {
         $config = $container->has('config') ? $container->get('config') : [];
         $debug = $config['debug'] ?? true;
 
         $config = $this->getTranslationConfig($config);
 
-        $formatter = $container->has($config['formatter']) ? $container->get($config['formatter']) : new $config['formatter']();
+        /** @var MessageFormatterInterface::class $formatter */
+        $formatter = $config['formatter'];
+        /** @var MessageFormatterInterface $formatter */
+        $formatter = $container->has($formatter) ? $container->get($formatter) : new $formatter();
 
         $cache = $debug ? null : $config['cache_dir'];
         $translator = new Translator($config['locale'], $formatter, $cache, $debug);
@@ -82,7 +84,7 @@ class TranslatorFactory
     protected function addLoaders(ContainerInterface $container, Translator $translator, array $loaders = []): void
     {
         foreach ($loaders as $format => $loader) {
-            if (is_string($loader)) {
+            if (\is_string($loader)) {
                 $loader = $container->has($loader) ? $container->get($loader) : new $loader();
             }
 
