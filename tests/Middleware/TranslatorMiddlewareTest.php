@@ -19,7 +19,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Component\Translation\Translator;
 use Validus\Translation\Middleware\TranslatorMiddleware;
 
 class TranslatorMiddlewareTest extends TestCase
@@ -30,7 +30,7 @@ class TranslatorMiddlewareTest extends TestCase
     /** @var RequestHandlerInterface|ObjectProphecy $handler */
     private $handler;
 
-    /** @var TranslatorInterface|ObjectProphecy $translator */
+    /** @var Translator|ObjectProphecy $translator */
     private $translator;
 
     /** @var ContainerInterface|ObjectProphecy $container */
@@ -40,7 +40,7 @@ class TranslatorMiddlewareTest extends TestCase
     {
         $this->request = $this->prophesize(ServerRequestInterface::class);
         $this->handler = $this->prophesize(RequestHandlerInterface::class);
-        $this->translator = $this->prophesize(TranslatorInterface::class);
+        $this->translator = $this->prophesize(Translator::class);
         $this->container = $this->prophesize(ContainerInterface::class);
     }
 
@@ -67,12 +67,6 @@ class TranslatorMiddlewareTest extends TestCase
         $translator = $this->translator->reveal();
 
         $request = $this->request->reveal();
-
-        $this->request->withAttribute(TranslatorMiddleware::TRANSLATOR_ATTRIBUTE, $translator)
-            ->shouldBeCalledOnce()
-            ->willReturn(
-                $request
-            );
 
         $this->handler->handle($request)
             ->shouldBeCalledOnce()
@@ -106,12 +100,6 @@ class TranslatorMiddlewareTest extends TestCase
 
         $request = $this->request->reveal();
 
-        $this->request->withAttribute(TranslatorMiddleware::TRANSLATOR_ATTRIBUTE, $translator)
-            ->shouldBeCalledOnce()
-            ->willReturn(
-                $request
-            );
-
         $this->handler->handle($request)
             ->shouldBeCalledOnce()
             ->willReturn(
@@ -141,12 +129,6 @@ class TranslatorMiddlewareTest extends TestCase
 
         $request = $this->request->reveal();
 
-        $this->request->withAttribute(TranslatorMiddleware::TRANSLATOR_ATTRIBUTE, $translator)
-            ->shouldBeCalledOnce()
-            ->willReturn(
-                $request
-            );
-
         $this->handler->handle($request)
             ->shouldBeCalledOnce()
             ->willReturn(
@@ -172,12 +154,6 @@ class TranslatorMiddlewareTest extends TestCase
         $translator = $this->translator->reveal();
 
         $request = $this->request->reveal();
-
-        $this->request->withAttribute(TranslatorMiddleware::TRANSLATOR_ATTRIBUTE, $translator)
-            ->shouldBeCalledOnce()
-            ->willReturn(
-                $request
-            );
 
         $this->handler->handle($request)
             ->shouldBeCalledOnce()

@@ -42,10 +42,9 @@ class TranslatorFactoryTest extends TestCase
             ->willReturn(false);
 
         $factory = new TranslatorFactory();
-        /** @var Translator $translator */
+
         $translator = $factory($this->container->reveal());
 
-        static::assertInstanceOf(Translator::class, $translator);
         static::assertSame('en', $translator->getLocale());
         static::assertSame([], $translator->getFallbackLocales());
         static::assertCount(0, (array) $translator->getCatalogue('en')->getResources());
@@ -76,7 +75,6 @@ class TranslatorFactoryTest extends TestCase
         /** @var Translator $translator */
         $translator = $factory($this->container->reveal());
 
-        static::assertInstanceOf(Translator::class, $translator);
         static::assertSame('en', $translator->getLocale());
         static::assertSame(['en', 'fr', 'pl'], $translator->getFallbackLocales());
 
@@ -116,7 +114,6 @@ class TranslatorFactoryTest extends TestCase
         /** @var Translator $translator */
         $translator = $factory($this->container->reveal());
 
-        static::assertInstanceOf(Translator::class, $translator);
         static::assertSame('en', $translator->getLocale());
         static::assertSame(['en', 'fr'], $translator->getFallbackLocales());
 

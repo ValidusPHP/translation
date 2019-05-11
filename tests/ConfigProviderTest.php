@@ -29,7 +29,7 @@ class ConfigProviderTest extends TestCase
     {
         $config = ($this->provider)();
 
-        static::assertInternalType('array', $config);
+        static::assertIsArray($config);
 
         return $config;
     }
@@ -42,6 +42,12 @@ class ConfigProviderTest extends TestCase
     public function testReturnedArrayContainsDependencies(array $config): void
     {
         static::assertArrayHasKey('dependencies', $config);
-        static::assertInternalType('array', $config['dependencies']);
+        static::assertIsArray($config['dependencies']);
+
+        static::assertArrayHasKey('factories', $config['dependencies']);
+        static::assertIsArray($config['dependencies']['factories']);
+
+        static::assertArrayHasKey('aliases', $config['dependencies']);
+        static::assertIsArray($config['dependencies']['aliases']);
     }
 }
