@@ -19,7 +19,7 @@ $ composer require validus/translation
 ```
 
 ## Configuration
-  
+
 A complete example configuration can be found in example/full-config.php. 
 Please note that the values in there are the defaults, and don't have to be supplied when you are not changing them. Keep your own configuration as minimal as possible. A minimal configuration can be found in example/simple-config.php
 
@@ -32,32 +32,19 @@ Validus Translation provides middleware consuming PSR-7 HTTP message instances, 
 #### Adding the middleware to your application
 you may pipe this middleware anywhere in your application. If you want to have it available anywhere, pipe it early in your application, prior to any routing. As an example, within Expressive, you could pipe it in the config/pipeline.php file:
 ```php
-$app->pipe(\Validus\Translation\Middleware\TranslatorMiddleware::class);
+$app->pipe(Validus\Translation\Middleware\TranslatorMiddleware::class);
 ```
 Within Expressive, you can do this when routing, in your config/routes.php file, or within a delegator factory:
 ```php
 $app->post('/login', [
-    \Validus\Translation\Middleware\TranslatorMiddleware::class,
-    \User\Middleware\LoginHandler::class
+    Validus\Translation\Middleware\TranslatorMiddleware::class,
+    User\Middleware\LoginMiddleware::class
 ]);
 ```
 #### Accessing the translator 
-if you have added the middleware to your application, you can access the translator from the request attributes : 
+if you have added the middleware to your application, you can access the translator via the container :
 ```php
-     public function handle(ServerRequestInterface $request): ResponseInterface
-     {
-        $translator = $request->getAttribute(TranslatorMiddleware::TRANSLATOR_ATTRIBUTE);
-        // or simply 
-        $translator = $request->getAttribute('translator');
-        
-        // do your thing 
-        
-        return $response;
-     }
-```
-or via the container :
-```php
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 $translator = $container->get(TranslatorInterface::class);
 ```
