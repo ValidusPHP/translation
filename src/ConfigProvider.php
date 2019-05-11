@@ -12,7 +12,9 @@ declare(strict_types=1);
 
 namespace Validus\Translation;
 
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Component\Translation\Translator;
+use Symfony\Component\Translation\TranslatorInterface as LegacyTranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Validus\Translation\Middleware\TranslatorMiddleware;
 use Validus\Translation\Middleware\TranslatorMiddlewareFactory;
 
@@ -35,8 +37,12 @@ class ConfigProvider
     {
         return [
             'factories' => [
-                TranslatorInterface::class => TranslatorFactory::class,
+                Translator::class => TranslatorFactory::class,
                 TranslatorMiddleware::class => TranslatorMiddlewareFactory::class,
+            ],
+            'aliases' => [
+                TranslatorInterface::class => Translator::class,
+                LegacyTranslatorInterface::class => Translator::class,
             ],
         ];
     }
