@@ -11,14 +11,14 @@
         "psr-11"
     ],
     "require": {
-        "php": "^7.1",
+        "php": "^7.2",
         "psr/container": "^1.0",
         "psr/http-message": "^1.0",
         "psr/http-server-handler": "^1.0",
         "psr/http-server-middleware": "^1.0",
-        "symfony/config": "^4.0",
-        "symfony/translation": "^4.0",
-        "symfony/yaml": "^4.0",
+        "symfony/config": "^4.2",
+        "symfony/translation": "^4.2",
+        "symfony/yaml": "^4.2",
         "willdurand/negotiation": "^2.3"
     },
     "require-dev": {
